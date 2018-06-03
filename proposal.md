@@ -2,18 +2,22 @@
 Here is a suggested outline for your proposal. You don't need to follow this
 outline, but it may help you focus your project.
 
-* Project title
-* Team members
-* Description (1 pp describing the basic idea)
-* Hardware required (itemize what hardware, if any, you need)
-* Funds requested (the amount you will want to be reimbursed, remember you have
-  a $20 budget per person)
-* Major task breakdown and who is responsible for each task
-* Goals for next week
-* References and resources used
+* Looping Machine
+* Maika Isogawa, Gen Singer, Callan Hoskins
+* Looping machine: a device that plays a recorded loop (of approx. 10 secs)
+  that can be used as a background track for music. Ideally, one should
+  be able to add a sound to the loop and have it become part of the loop
+  being replayed over and over (i.e. if you add a bell sound to the playing
+  track, that bell sound will be heard on the loop for as long as it plays).
 
-Keep the proposal short and to the point.
-
-We suggest you try to get all the major hardware components working by the
-first week. That will leave the following week for putting the components
-together into a working system.
+* Hardware required: speakers (can be borrowed), basic hardware components
+  already in our kit, (possibly) bluetooth module to control remotely.
+* Funds requested: 0
+* Major task breakdown and who is responsible for each task: 
+  1. Playing songs from the Pi (Gen)
+  2. Hardware setup - being able to control the physical processes that
+     make music (Maika)
+  3. Sending input via bluetooth or other seial communication (Callan)
+* Goals for this week: Play music from the Pi, be able to receive scan-
+  codes from the Bluetooth module
+* References and resources used: None yet
