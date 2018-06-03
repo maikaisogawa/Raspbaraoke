@@ -2,6 +2,7 @@
 Here is a suggested outline for your proposal. You don't need to follow this
 outline, but it may help you focus your project.
 
+// UPDATED PROJECT PROPOSAL ->
 * Looping Machine
 * Maika Isogawa, Gen Singer, Callan Hoskins
 * Looping machine: a device that plays a recorded loop (of approx. 10 secs)
@@ -17,7 +18,8 @@ outline, but it may help you focus your project.
   1. Playing songs from the Pi (Gen)
   2. Hardware setup - being able to control the physical processes that
      make music (Maika)
-  3. Sending input via bluetooth or other seial communication (Callan)
+  3. Sending input via bluetooth or other serial communication (Callan)
+  4. Secondary UART and bit-bang between pi and music player (Maika)
 * Goals for this week: Play music from the Pi, be able to receive scan-
   codes from the Bluetooth module
 * References and resources used: None yet
