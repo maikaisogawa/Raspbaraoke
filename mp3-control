@@ -39,6 +39,8 @@ void buttons_init(void) {
 void send_to_UART(int code, int pin) {
     if ((code == STOP_CODE) || (code == PLAY_CODE)) {
         gpio_write(MP3_RX);
+    }
+}
 
 void change_song(void) {     //interrupt handler
     send_to_UART(STOP_CODE, -1);
