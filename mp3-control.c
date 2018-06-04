@@ -5,16 +5,16 @@
 #include "printf.h"
 #include "assert.h"
 
-#define MP3_TX GPIO_PIN23;
-#define MP3_RX GPIO_PIN24;
-#define SONG1 GPIO_PIN5;
-#define SONG2 GPIO_PIN6;
-#define SONG3 GPIO_PIN13;
-#define SONG4 GPIO_PIN19;
-#define SONG5 GPIO_PIN26;
-#define SONG6 GPIO_PIN21;
+#define MP3_TX GPIO_PIN23
+#define MP3_RX GPIO_PIN24
+#define SONG1 GPIO_PIN5
+#define SONG2 GPIO_PIN6
+#define SONG3 GPIO_PIN13
+#define SONG4 GPIO_PIN19
+#define SONG5 GPIO_PIN26
+#define SONG6 GPIO_PIN21
 #define BAUD_RATE 
-#define SETUP_CODE 0x7E054100045EF
+#define SETUP_CODE 0x7E0541000045EF
 #define PLAY_CODE 0x7E030102EF
 #define STOP_CODE 0x7E030E0DEF
 #define NUM_SONGS 6
@@ -38,9 +38,7 @@ void buttons_init(void) {
 }
 
 void send_to_UART(int code, int pin) {
-    if ((code == STOP_CODE) || (code == PLAY_CODE)) {
-        gpio_write(MP3_RX);
-    }
+    printf("you sent this code: %x to this pin %d", code, pin);
 }
 
 void change_song(void) {     //interrupt handler
@@ -97,7 +95,7 @@ void setup(int song) {
 }
 
 void play(void) {
-     send_to_UART(PLAY_CODE, song);
+     send_to_UART(PLAY_CODE, -1);
 }
 
 void main() {
@@ -114,7 +112,7 @@ void main() {
              setup(curr);
              prev = curr;
          }
-         play(curr);
+         play();
          printf(“curr is: %d”, curr);
     }
 
