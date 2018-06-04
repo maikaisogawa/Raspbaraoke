@@ -1,23 +1,19 @@
-NAME = apps/interrupts_console_shell
-# Add any modules for which you want to use your own code for assign7, rest will be drawn from library
-MY_MODULES = keyboard.o gprof.o
-
-# This is the list of modules for building libmypi.a
-LIMYBPI_MODULES = timer.o gpio.o strings.o backtrace.o malloc.o keyboard.o shell.o fb.o gl.o console.o printf.o
+NAME = mp3-control
+MODULES = 
 
 
 CFLAGS  = -I$(CS107E)/include -g -Wall -Wpointer-arith
 CFLAGS += -Og -std=c99 -ffreestanding
 CFLAGS += -mapcs-frame -fno-omit-frame-pointer -mpoke-function-name
 LDFLAGS = -nostdlib -T memmap -L. -L$(CS107E)/lib
-LDLIBS  = -lpi -lgcc
+LDLIBS  = -lpi -lpiextra -lgcc
 
-all : $(NAME).bin $(MY_MODULES)
+all : $(NAME).bin
 
 %.bin: %.elf
 	arm-none-eabi-objcopy $< -O binary $@
 
-%.elf: %.o $(MY_MODULES) start.o cstart.o
+%.elf: %.o $(MODULES) start.o cstart.o
 	arm-none-eabi-gcc $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 %.o: %.c
@@ -25,10 +21,6 @@ all : $(NAME).bin $(MY_MODULES)
 
 %.o: %.s
 	arm-none-eabi-as $(ASFLAGS) $< -o $@
-
-libmypi.a: $(LIMYBPI_MODULES) Makefile
-	rm -f $@
-	arm-none-eabi-ar cDr $@ $(filter %.o,$^)
 
 %.list: %.o
 	arm-none-eabi-objdump --no-show-raw-insn -d $< > $@
@@ -39,19 +31,13 @@ install: $(NAME).bin
 test: tests/test_keyboard_interrupts.bin
 	rpi-install.py -p $<
 
-bonus: $(NAME)-bonus.bin
-	rpi-install.py -p $<
-
-# Note: link is now against local libmypi first
-%-bonus.elf: %.o start.o cstart.o libmypi.a
-	arm-none-eabi-gcc $(LDFLAGS) $(filter %.o,$^) -lmypi $(LDLIBS) -o $@
-
 clean:
-	rm -f *.o *.bin *.elf *.list *~ libmypi.a
+	rm -f *.o *.bin *.elf *.list *~
 
 .PHONY: all clean install test bonus
 
 .PRECIOUS: %.elf %.o %.a
+
 
 # empty recipe used to disable built-in rules for native build
 %:%.c
