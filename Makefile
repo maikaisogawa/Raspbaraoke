@@ -1,4 +1,4 @@
-NAME = mp3-control
+NAME = test_bluetooth_write
 MODULES = 
 
 
