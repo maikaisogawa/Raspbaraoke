@@ -19,12 +19,12 @@ void sender_init(unsigned int tx_pin, unsigned int rx_pin,
 /*
  * Send code from pin using gpio_write
  */
-void sender_send_code(unsigned int code);
+void sender_send_code(unsigned long long code);
 
 /*
  * Read code from pin using gpio_read
  */
 
-unsigned int sender_read_code(void);
+unsigned long long sender_read_code(void);
 
 #endif
