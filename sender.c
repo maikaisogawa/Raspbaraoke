@@ -56,7 +56,7 @@ void send_byte(unsigned int scancode) {
     send_bit(1); //stop bit
 }
 
-void sender_send_code(unsigned int code) {
+void sender_send_code(unsigned long long  code) {
     while (code) {
         unsigned int scancode = code & 0xff;
         code >>= 8;
@@ -74,12 +74,20 @@ unsigned int read_byte(void) {
     while (gpio_read(RX_PIN)) {} //wait for start bit 
     for (int i = 0; i < 8; i++) {
         timer_delay_us(DELAY_US);
-        READ_BYTE = (READ_BYTE << 1) + gpio_read(RX_PIN);
+        READ_BYTE = READ_BYTE + (gpio_read(RX_PIN) << i);
     }
-    timer_delay_us(DELAY_US);
+    //timer_delay_us(DELAY_US);
     return READ_BYTE;
-}
-
-unsigned int sender_read_code(void) {
-    return read_byte();
+} 
+unsigned long long sender_read_code(void) {
+    unsigned long long code = 0;
+    unsigned int byte;
+    int offset = 0;
+    while (1) {
+        byte = read_byte();
+        code = code | (read_byte() << offset);
+        offset += 8;
+        if (byte == 0xef) break;
+    }
+    return code;
 }
