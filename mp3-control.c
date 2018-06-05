@@ -13,9 +13,12 @@ static const int SONG3 = GPIO_PIN13;
 static const int SONG4 = GPIO_PIN19;
 static const int SONG5 = GPIO_PIN26;
 static const int SONG6 = GPIO_PIN21;
-#define SETUP_CODE (long)0x7E0541000045EF
-#define PLAY_CODE (long)0x7E030102EF
-#define STOP_CODE (long)0x7E030E0DEF
+//#define SETUP_CODE (long)0x7E0541000045EF
+//#define PLAY_CODE (long)0x7E030102EF
+//#define STOP_CODE (long)0x7E030E0DEF
+static int SETUP_CODE[7] = {0x7E, 0x05, 0x41, 0x00, 0x00, 0x45, 0xEF};
+static int PLAY_CODE[7] = {0x7E, 0x03, 0x01, 0x02, 0xEF, 0xFF, 0xFF};
+static int STOP_CODE[7] = {0x7E, 0x03, 0x0E, 0x0D, 0xEF, 0xFF, 0xFF};
 #define NUM_SONGS 6
 
 //unsigned int[NUM_SONGS] songs;
@@ -36,9 +39,12 @@ void buttons_init(void) {
     gpio_set_pullup(SONG6);
 }
 
-void send_to_UART(long code, int pin) {
-    printf("initial 4 chars: %x", (code >> 16));
-    printf("you sent this code: %x to this pin %d\n", code, pin);
+void send_to_UART(int code[7], int pin) {
+    for(int i = 0; i < 7; i++) {
+        printf("code byte: %x\n", code[i]);
+    }
+//    printf("initial 4 chars: %x", (code >> 16));
+//    printf("you sent this code: %x to this pin %d\n", code, pin);
 }
 
 void change_song(void) {     //interrupt handler
@@ -89,9 +95,16 @@ static void setup_interrupts(void) {
 }
 
 void setup(int song) {
-     long code = SETUP_CODE;
-     code = (code | (song << 16));  // four hex-places- need to convert to bit
-     send_to_UART(code, song);
+    int code[7];
+    for(int i = 0; i < 7; i++) {
+        code[i] = SETUP_CODE[i];
+    }
+//    int code[7] = SETUP_CODE;
+    code[5] = code[5] | song;
+    send_to_UART(code, song);
+//     long code = SETUP_CODE;
+//     code = (code | (song << 16));  // four hex-places- need to convert to bit
+//     send_to_UART(code, song);
 }
 
 void play(void) {
