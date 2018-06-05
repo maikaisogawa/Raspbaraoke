@@ -74,12 +74,10 @@ unsigned int read_byte(void) {
     while (gpio_read(RX_PIN)) {} //wait for start bit 
     for (int i = 0; i < 8; i++) {
         timer_delay_us(DELAY_US);
-        READ_BYTE = (READ_BYTE << 1) + gpio_read(RX_PIN);
+        READ_BYTE = READ_BYTE + (gpio_read(RX_PIN) << i);
     }
     timer_delay_us(DELAY_US);
     return READ_BYTE;
-}
-
-unsigned int sender_read_code(void) {
+} unsigned int sender_read_code(void) {
     return read_byte();
 }
