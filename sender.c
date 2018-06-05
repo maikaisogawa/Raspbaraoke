@@ -48,6 +48,7 @@ void send_bit(unsigned char a) {
  */
 void send_byte(unsigned int scancode) {
     send_bit(0); //start bit
+    
     for (int i = 0; i < 8; i++) {
         char bit = scancode & 1;
         scancode >>= 1;
