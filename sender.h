@@ -25,6 +25,6 @@ void sender_send_code(unsigned int code);
  * Read code from pin using gpio_read
  */
 
-void sender_read_code(void);
+unsigned int sender_read_code(void);
 
 #endif

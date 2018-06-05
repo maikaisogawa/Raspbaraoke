@@ -3,7 +3,16 @@
 #include "timer.h"
 #include "sender.h"
 
-static const unsigned int TX_PIN, RX_PIN, DELAY_US;
+static unsigned int TX_PIN, RX_PIN, DELAY_US;
+
+/*
+static void setup_interrupts(void) {
+    bool ok = interrupts_attach_handler(interrupt_read_scancode);
+    if (!ok) pi_abort();
+    interrupts_enable_basic(INTERRUPTS_BASIC_ARM_TIMER_IRQ);
+    interrupts_global_enable();
+}
+*/
 
 void sender_init(unsigned int tx_pin, unsigned int rx_pin, 
     unsigned int baud_rate) {
@@ -21,23 +30,6 @@ void sender_init(unsigned int tx_pin, unsigned int rx_pin,
 }
 
 /*
- * function: send_byte
- * Sends a byte formatted according to the BY8301-16P voice module serial
- * protocol:Start bit: 1 (high); data bits: 8; Parity: None; 
- *     Stop Bits: 1 (low). 
- * @param scancode - 1-byte number to be sent through serial protocol
- */
-void send_byte(unsigned int scancode) {
-    send_bit(0); //start bit
-    for (int i = 0; i < 8; i++) {
-        bit = scancode & 1;
-        scancode >> 1;
-        send_bit(bit);
-    }
-    gpio_write(TX_PIN, 1); //stop bit
-}
-
-/*
  * function: send_bit
  * Sets TX_PIN to high or low for DELAY_US microseconds
  * @param a - 1 or 0 (if not 1 or 0, does nothing)
@@ -47,7 +39,24 @@ void send_bit(unsigned char a) {
     timer_delay_us(DELAY_US);
 }
 
-void send_code(unsigned int code) {
+/*
+ * function: send_byte
+ * Sends a byte formatted according to the BY8301-16P voice module serial
+ * protocol:Start bit: 1 (high); data bits: 8; Parity: None; 
+ *     Stop Bits: 1 (low). 
+ * @param scancode - 1-byte number to be sent through serial protocol
+ */
+void send_byte(unsigned int scancode) {
+    send_bit(0); //start bit
+    for (int i = 0; i < 8; i++) {
+        char bit = scancode & 1;
+        scancode >>= 1;
+        send_bit(bit);
+    }
+    send_bit(1); //stop bit
+}
+
+void sender_send_code(unsigned int code) {
     while (code) {
         unsigned int scancode = code & 0xff;
         code >>= 8;
@@ -55,6 +64,22 @@ void send_code(unsigned int code) {
     } 
 }
 
-unsigned int read_code(void) {
+/*
+ * function: read_byte
+ * Reads eight bits from RX_PIN and returns the value of that eight-bit
+ * binary number.
+ */
+unsigned int read_byte(void) {
+    unsigned int READ_BYTE = 0;
+    while (gpio_read(RX_PIN)) {} //wait for start bit 
+    for (int i = 0; i < 8; i++) {
+        timer_delay_us(DELAY_US);
+        READ_BYTE = (READ_BYTE << 1) + gpio_read(RX_PIN);
+    }
+    timer_delay_us(DELAY_US);
+    return READ_BYTE;
+}
 
+unsigned int sender_read_code(void) {
+    return read_byte();
 }

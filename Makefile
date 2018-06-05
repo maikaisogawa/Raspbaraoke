@@ -1,5 +1,5 @@
 NAME = mp3-control
-MODULES = 
+MODULES = sender.o
 
 
 CFLAGS  = -I$(CS107E)/include -g -Wall -Wpointer-arith
