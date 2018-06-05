@@ -28,7 +28,7 @@ all : $(NAME).bin
 install: $(NAME).bin
 	rpi-install.py -p $<
 
-test: tests/test_keyboard_interrupts.bin
+test: test_sender.bin
 	rpi-install.py -p $<
 
 clean:
