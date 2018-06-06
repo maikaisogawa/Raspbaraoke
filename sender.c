@@ -50,7 +50,7 @@ void send_bit(unsigned char a) {
  * Transmitted in little-endian form. 
  * @param scancode - 1-byte number to be sent through serial protocol
  */
-void send_byte(unsigned int scancode) {
+void send_byte(unsigned char scancode) {
     send_bit(0); //start bit
     unsigned int written = 0; 
     unsigned int sent_code = 0;
@@ -59,21 +59,21 @@ void send_byte(unsigned int scancode) {
         char bit = scancode & 1;
         scancode >>= 1;
         send_bit(bit);
-        sent_code = sent_code | (bit << (i + 1));
-        received_code = received_code | (gpio_read(RX_PIN) << i);
+        //sent_code = sent_code | (bit << (i + 1));
+        //received_code = received_code | (gpio_read(RX_PIN) << i);
     }
-    written = written | sent_code;
+    //written = written | sent_code;
     send_bit(1); //stop bit
-    written = written | (1 << 10);
-    printf("written: %x\nsent_code: %x\n", written, sent_code >> 1);
-    printf("received_code: %x\n", received_code);
+    //written = written | (1 << 10);
+    //printf("written: %x\nsent_code: %x\n", written, sent_code >> 1);
+    //printf("received_code: %x\n", received_code);
 }
 
 void sender_send_code(unsigned long long  code) {
-    printf("sending %x\n", (unsigned int)code);
+    //printf("sending %x\n", (unsigned int)code);
     while (code) {
-        printf("entered while loop in sender_send_code with code: %x\n", 
-            (unsigned int)code);
+        //printf("entered while loop in sender_send_code with code: %x\n", 
+            //(unsigned int)code);
         unsigned int scancode = code & 0xff;
         code >>= 8;
         send_byte(scancode); 
