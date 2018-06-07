@@ -12,7 +12,6 @@
 
 void main() 
 {
-    printf("This is where the test should occur");
     gpio_init();
     console_init(20, 40);
     keyboard_init();
