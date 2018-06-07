@@ -1,10 +1,10 @@
-NAME = test_read
+NAME = test_send
 MODULES = sender.o
 
 INTERFACES = sender.h
 
 
-CFLAGS  = -I$(CS107E)/include -g -Wall -Wpointer-arith
+CFLAGS  = -I$(CS107E)/include -I. -g -Wall -Wpointer-arith
 CFLAGS += -Og -std=c99 -ffreestanding
 CFLAGS += -mapcs-frame -fno-omit-frame-pointer -mpoke-function-name
 LDFLAGS = -nostdlib -T memmap -L. -L$(CS107E)/lib
