@@ -1,4 +1,5 @@
 #include "songs.h"
+#include "stdio.h"
 //struct includes: char * artist, char * title, and a char * lyrics
 
 char * titles;
@@ -20,9 +21,13 @@ char * songs_init(void)
 
 song_t * load_songs(void) 
 {
+    FILE * fp;
     song_t * songs;
+    char * titles = return_titles(); 
     for (int i = 0; i < NUM_SONGS; i++) {
+        fp = fopen(titles[i]);
         song_t new_song;
+       
         
         new_song.title = //first line in .txt file
         new_song.artist = //second line in .txt file
