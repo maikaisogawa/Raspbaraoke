@@ -1,6 +1,8 @@
 NAME = test_read
 MODULES = sender.o
 
+INTERFACES = sender.h
+
 
 CFLAGS  = -I$(CS107E)/include -g -Wall -Wpointer-arith
 CFLAGS += -Og -std=c99 -ffreestanding
@@ -28,7 +30,7 @@ all : $(NAME).bin
 install: $(NAME).bin
 	rpi-install.py -p $<
 
-test: test_sender.bin
+test: tests/test_send.bin
 	rpi-install.py -p $<
 
 clean:
