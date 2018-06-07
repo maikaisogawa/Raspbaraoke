@@ -1,57 +1,52 @@
 #include "songs.h"
-#include "stdio.h"
+#include "printf.h"
 //struct includes: char * artist, char * title, and a char * lyrics
 
-char * titles;
 
-struct song_t 
+
+typedef struct
 {
     char * artist;
     char * title;
     char * lyrics;
-};
+} song_t;
 
-char * songs_init(void) 
+static struct song_t library;
+
+song_t load_songs(void)
 {
-    song_t * library = load_songs();
+    song_t songs;
+    char * title = "After_the_Storm";
+    //  for (int i = 0; i < NUM_SONGS; i++) {
+    song_t new_song;
+    new_song.title = title;
+    new_song.artist = "Kali Uchis";
+    //   new_song.artist = //second line in .txt file
+    //   new_song.lyrics = //loop through the rest
+    songs = new_song;
+    return songs;
+    //  }
+}
+
+char * songs_get_title(song_t song) {
+    return song.title;
+}
+
+char * songs_get_artist(song_t song) {
+    return song.artist;
+}
+
+char * songs_get_lyrics(song_t song) {
+    return song.lyrics;
+}
+
+int songs_init(void)
+{
+    song_t library = load_songs();
+    printf("song title: %s, artist: %s\n", songs_get_title(library), songs_get_artist(library));
 //    char * titles;
 //    for (int i = 0; i < NUM_SONGS; i++) {
 //
 //    }
-}
-
-song_t * load_songs(void) 
-{
-    FILE * fp;
-    song_t * songs;
-    char * titles = return_titles(); 
-  //  for (int i = 0; i < NUM_SONGS; i++) {
-        fp = fopen("After_the_Storm.txt");
-        while(fp != '\n') {
-            char * title;
-            title = fp;
-            title++;
-            fp++;
-        }
-        song_t new_song;
-    new_song.title = title;
-    fclose(fp);
-     //   new_song.artist = //second line in .txt file
-     //   new_song.lyrics = //loop through the rest
-        printf("song title: %s\n", new_song.songs_get_title());
-    songs = new_song;
-    return songs;
-  //  }
-}
-
-char * songs_get_title(void) {
-    return song_t.title;
-}
-
-char * songs_get_artist(void) {
-    return song_t.artist;
-}
-
-char * songs_get_lyrics(void) {
-    return song_t.lyrics;
+    return 0;
 }

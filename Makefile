@@ -1,4 +1,4 @@
-NAME = songs.c 
+NAME = test_songs
 MODULES = sender.o songs.o
 
 INTERFACES = sender.h songs.h

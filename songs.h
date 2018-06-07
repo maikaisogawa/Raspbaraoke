@@ -11,8 +11,3 @@ void load_titles()
     titles[4] = "Honey.txt";
     titles[5] = "Total.txt";
 }
-
-char * return_titles() 
-{
-    return titles;
-}
