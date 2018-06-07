@@ -5,27 +5,49 @@
 #include "strings.h"
 #include "malloc.h"
 #include "pi.h"
+#include "songs.h"
 
 /*
- * shell.c
- * Author: Callan A. Hoskins
- * 15 May 2018
- * This file implements a basic shell program, using an attached PS/2 key-
- * board. Call functions like 'peek', 'help', 'echo', 'poke', and 'reboot.'
+ * karaoke_shell.c
+ * Author: Callan A. Hoskins, Maika Isogawa, Gen
+ * 6 June 2018
+ * This file extends a basic shell program, using an attached PS/2 key-
+ * board. Call functions like 'help', 'echo', and 'list'
 */
 
 #define LINE_LEN 80
 #define BACKSPACE 0x8
-#define SPACE ' ' 
+#define SPACE ' '
+
+#define NUM_SONGS 6 // put this in songs.c file
 
 static int (*shell_printf)(const char * format, ...); 
 static const command_t commands[] = {
     {"help",   "<cmd> prints a list of commands or description of cmd", cmd_help},
     {"echo",   "<...> echos the user input to the screen", cmd_echo},
-    {"reboot", "reboots the Pi back to the bootloader", cmd_reboot}, 
-    {"peek", "[address] prints the value stored at memory address 'address'", cmd_peek},
-    {"poke", "[address][value] stores 'value' in the memory address 'address'", cmd_poke}
+    {"reboot", "reboots the Pi back to the bootloader", cmd_reboot},
+    {"list", "lists the songs available for play", cmd_list},
+    {"play", "plays the selected song", cmd_play},
+ //   {"peek", "[address] prints the value stored at memory address 'address'", cmd_peek},
+ //   {"poke", "[address][value] stores 'value' in the memory address 'address'", cmd_poke}
 };
+
+int cmd_list(void) {
+    for(int i = 0; i < NUM_SONGS; i++) {
+        // shell_printf("%s - %s\n", // song title, // song artist);
+    }
+    return 0;
+}
+
+int cmd_play(void) {
+    for(int i = 0; i < NUM_SONGS; i++) {
+        // loop through list of song titles
+        // when find song title matches
+        // shift instruction to include appropriate song
+        // send instruction to play song
+    }
+    return 0;
+}
 
 /*
  * function: cmd_echo
@@ -82,30 +104,30 @@ int cmd_reboot(int argc, const char *argv[]) {
  * specified is not a valid number, or the address is not 4-byte-
  * aligned. 
  */
-int cmd_peek (int argc, const char* argv[]) {
-    if (argc < 2) {
-        shell_printf("error: peek expects 1 argument [address]\n");
-        return 1;
-    }
-    //int addr_len = strlen(argv[1]);
-    const char* addr_str = argv[1];
-    const char **endptr = &argv[1];
-    unsigned int* addr = (unsigned int*)strtonum(argv[1], 
-        endptr);
-    if (**endptr != '\0') {
-        argv[1] = addr_str;
-        shell_printf("error: peek cannot convert '%s'\n", argv[1]);
-        return 1;
-    }
-    argv[1] = addr_str;
-    if (((unsigned int)addr)%4 != 0) {
-        shell_printf("error: peek address must be 4-byte aligned\n");
-        return 1;
-    }
-    unsigned int val = *addr;
-    shell_printf("0x%08x: %08x\n", (unsigned int)addr, val);
-    return 0;
-}
+//int cmd_peek (int argc, const char* argv[]) {
+//    if (argc < 2) {
+//        shell_printf("error: peek expects 1 argument [address]\n");
+//        return 1;
+//    }
+//    //int addr_len = strlen(argv[1]);
+//    const char* addr_str = argv[1];
+//    const char **endptr = &argv[1];
+//    unsigned int* addr = (unsigned int*)strtonum(argv[1],
+//        endptr);
+//    if (**endptr != '\0') {
+//        argv[1] = addr_str;
+//        shell_printf("error: peek cannot convert '%s'\n", argv[1]);
+//        return 1;
+//    }
+//    argv[1] = addr_str;
+//    if (((unsigned int)addr)%4 != 0) {
+//        shell_printf("error: peek address must be 4-byte aligned\n");
+//        return 1;
+//    }
+//    unsigned int val = *addr;
+//    shell_printf("0x%08x: %08x\n", (unsigned int)addr, val);
+//    return 0;
+//}
 
 /*
  * function: cmd_poke
@@ -115,35 +137,35 @@ int cmd_peek (int argc, const char* argv[]) {
  * specified isn't 4-byte aligned, or either argument cannot be 
  * converted to an integer. 
  */
-int cmd_poke(int argc, const char* argv[]) {
-    if (argc < 3) {
-         shell_printf("error: poke expects 2 arguments [address][value]\n");
-         return 1;
-     }
-     const char* addr_str = argv[1];
-     const char **endptr = &argv[1];
-     unsigned int* addr = (unsigned int*)strtonum(argv[1],
-         endptr);
-     if (**endptr != '\0') {
-         argv[1] = addr_str;
-         shell_printf("error: poke cannot convert '%s'\n", argv[1]);
-         return 1;
-     }
-     if (((unsigned int)addr)%4 != 0) {
-        argv[1] = addr_str;
-        shell_printf("error: poke address must be 4-byte aligned\n");
-        return 1;
-     }
-     unsigned int val = (unsigned int)strtonum(argv[2], endptr);
-     if (**endptr != '\0') {
-        shell_printf("error: poke cannot convert '%s'\n", argv[2]);
-        argv[1] = addr_str;
-        return 1;
-     }
-     argv[1] = addr_str;
-     *addr = val;
-     return 0;
-}
+//int cmd_poke(int argc, const char* argv[]) {
+//    if (argc < 3) {
+//         shell_printf("error: poke expects 2 arguments [address][value]\n");
+//         return 1;
+//     }
+//     const char* addr_str = argv[1];
+//     const char **endptr = &argv[1];
+//     unsigned int* addr = (unsigned int*)strtonum(argv[1],
+//         endptr);
+//     if (**endptr != '\0') {
+//         argv[1] = addr_str;
+//         shell_printf("error: poke cannot convert '%s'\n", argv[1]);
+//         return 1;
+//     }
+//     if (((unsigned int)addr)%4 != 0) {
+//        argv[1] = addr_str;
+//        shell_printf("error: poke address must be 4-byte aligned\n");
+//        return 1;
+//     }
+//     unsigned int val = (unsigned int)strtonum(argv[2], endptr);
+//     if (**endptr != '\0') {
+//        shell_printf("error: poke cannot convert '%s'\n", argv[2]);
+//        argv[1] = addr_str;
+//        return 1;
+//     }
+//     argv[1] = addr_str;
+//     *addr = val;
+//     return 0;
+//}
 
 void shell_init(formatted_fn_t print_fn)
 {

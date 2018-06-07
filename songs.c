@@ -12,10 +12,11 @@ struct song_t
 
 char * songs_init(void) 
 {
-    char * titles;
-    for (int i = 0; i < NUM_SONGS; i++) {
-        
-    }
+    load_songs();
+//    char * titles;
+//    for (int i = 0; i < NUM_SONGS; i++) {
+//
+//    }
 }
 
 song_t * load_songs(void) 
