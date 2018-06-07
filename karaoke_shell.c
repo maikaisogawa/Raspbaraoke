@@ -19,8 +19,6 @@
 #define BACKSPACE 0x8
 #define SPACE ' '
 
-#define NUM_SONGS 6 // put this in songs.c file
-
 static int (*shell_printf)(const char * format, ...); 
 static const command_t commands[] = {
     {"help",   "<cmd> prints a list of commands or description of cmd", cmd_help},

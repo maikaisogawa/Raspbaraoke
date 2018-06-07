@@ -30,3 +30,15 @@ song_t * load_songs(void)
         new_song.lyrics = //loop through the rest 
     }
 }
+
+char * songs_get_title(void) {
+    return song_t.title;
+}
+
+char * songs_get_artist(void) {
+    return song_t.artist;
+}
+
+char * songs_get_lyrics(void) {
+    return song_t.lyrics;
+}
