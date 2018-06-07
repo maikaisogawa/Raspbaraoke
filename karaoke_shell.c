@@ -9,7 +9,7 @@
 
 /*
  * karaoke_shell.c
- * Author: Callan A. Hoskins, Maika Isogawa, Gen
+ * Author: Callan A. Hoskins, Maika Isogawa, Genevieve Singer
  * 6 June 2018
  * This file extends a basic shell program, using an attached PS/2 key-
  * board. Call functions like 'help', 'echo', and 'list'
@@ -18,6 +18,23 @@
 #define LINE_LEN 80
 #define BACKSPACE 0x8
 #define SPACE ' '
+
+int cmd_list(int argc, const char *argv[]) {
+    for(int i = 0; i < NUM_SONGS; i++) {
+        // shell_printf("%s - %s\n", // song title, // song artist);
+    }
+    return 0;
+}
+
+int cmd_play(int argc, const char *argv[]) {
+    for(int i = 0; i < NUM_SONGS; i++) {
+        // loop through list of song titles
+        // when find song title matches
+        // shift instruction to include appropriate song
+        // send instruction to play song
+    }
+    return 0;
+}
 
 static int (*shell_printf)(const char * format, ...); 
 static const command_t commands[] = {
@@ -29,23 +46,6 @@ static const command_t commands[] = {
  //   {"peek", "[address] prints the value stored at memory address 'address'", cmd_peek},
  //   {"poke", "[address][value] stores 'value' in the memory address 'address'", cmd_poke}
 };
-
-int cmd_list(void) {
-    for(int i = 0; i < NUM_SONGS; i++) {
-        // shell_printf("%s - %s\n", // song title, // song artist);
-    }
-    return 0;
-}
-
-int cmd_play(void) {
-    for(int i = 0; i < NUM_SONGS; i++) {
-        // loop through list of song titles
-        // when find song title matches
-        // shift instruction to include appropriate song
-        // send instruction to play song
-    }
-    return 0;
-}
 
 /*
  * function: cmd_echo
@@ -281,13 +281,12 @@ int shell_evaluate(const char *line)
     return res;
 }
 
-void shell_run(void)
+void karaoke_shell_run(void)
 {
-    shell_printf("Welcome to the CS107E shell. Remember to type on your PS/2 keyboard!\n");
+    shell_printf("Welcome to the Karaoke shell!\n");
     while (1) 
     {
         char line[LINE_LEN + 1]; //effective line length = 80 (+'\0')
-
         shell_printf("Pi> ");
         shell_readline(line, sizeof(line));
         shell_evaluate(line);
