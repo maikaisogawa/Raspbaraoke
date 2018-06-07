@@ -1,7 +1,7 @@
 NAME = test_songs
-MODULES = sender.o songs.o
+MODULES = sender.o songs.o karaoke_shell.o
 
-INTERFACES = sender.h songs.h
+INTERFACES = sender.h songs.h karaoke_shell.h
 
 
 CFLAGS  = -I$(CS107E)/include -I. -g -Wall -Wpointer-arith
