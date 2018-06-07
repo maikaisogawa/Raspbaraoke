@@ -2,15 +2,6 @@
 #include "printf.h"
 //struct includes: char * artist, char * title, and a char * lyrics
 
-
-
-typedef struct
-{
-    char * artist;
-    char * title;
-    char * lyrics;
-} song_t;
-
 static struct song_t library;
 
 song_t load_songs(void)

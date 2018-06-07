@@ -2,6 +2,14 @@
 
 const char * titles[NUM_SONGS];
 
+typedef struct
+{
+    char * artist;
+    char * title;
+    char * lyrics;
+} song_t;
+
+
 void load_titles() 
 {
     titles[0] = "After_the_Storm.txt";
@@ -12,7 +20,7 @@ void load_titles()
     titles[5] = "Total.txt";
 }
 
-song_t load songs(void);
+song_t load_songs(void);
 
 char * songs_get_title(song_t song);
 
