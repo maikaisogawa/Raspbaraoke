@@ -11,3 +11,13 @@ void load_titles()
     titles[4] = "Honey.txt";
     titles[5] = "Total.txt";
 }
+
+song_t load songs(void);
+
+char * songs_get_title(song_t song);
+
+char * songs_get_artist(song_t song);
+
+char * songs_get_lyrics(song_t song);
+
+int songs_init(void);
