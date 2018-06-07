@@ -1,7 +1,7 @@
-NAME = test_send
-MODULES = sender.o
+NAME = test_songs
+MODULES = sender.o songs.o
 
-INTERFACES = sender.h
+INTERFACES = sender.h songs.h
 
 
 CFLAGS  = -I$(CS107E)/include -I. -g -Wall -Wpointer-arith
