@@ -13,7 +13,7 @@ struct song_t
 
 char * songs_init(void) 
 {
-    load_songs();
+    song_t * library = load_songs();
 //    char * titles;
 //    for (int i = 0; i < NUM_SONGS; i++) {
 //
@@ -25,15 +25,23 @@ song_t * load_songs(void)
     FILE * fp;
     song_t * songs;
     char * titles = return_titles(); 
-    for (int i = 0; i < NUM_SONGS; i++) {
-        fp = fopen(titles[i]);
+  //  for (int i = 0; i < NUM_SONGS; i++) {
+        fp = fopen("After_the_Storm.txt");
+        while(fp != '\n') {
+            char * title;
+            title = fp;
+            title++;
+            fp++;
+        }
         song_t new_song;
-       
-        
-        new_song.title = //first line in .txt file
-        new_song.artist = //second line in .txt file
-        new_song.lyrics = //loop through the rest 
-    }
+    new_song.title = title;
+    fclose(fp);
+     //   new_song.artist = //second line in .txt file
+     //   new_song.lyrics = //loop through the rest
+        printf("song title: %s\n", new_song.songs_get_title());
+    songs = new_song;
+    return songs;
+  //  }
 }
 
 char * songs_get_title(void) {
