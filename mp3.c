@@ -20,14 +20,30 @@ void mp3_play_song(unsigned int SONG_NUM) {
     unsigned char LOW = (char)SONG_NUM%256;
     unsigned char CHECKSUM = HIGH ^ LOW ^ 0X41 ^ 0x05;
     unsigned char play[7] = {0x7e, 0x05, 0x41, HIGH, LOW, CHECKSUM, 0xef};
-    for (int i = 0; i < 7; i++) {
-        printf("%d: %x, ", i, play[i]);
-    } 
-    printf("\n");
     sender_send_code(play, 7);
 }
     
 void mp3_resume(void) {
     unsigned char resume[5] = {0x7e, 0x03, 0x01, 0x02, 0xef};
     sender_send_code(resume, 5);
+}
+
+void mp3_pause(void) {
+    unsigned char pause[5] = {0x7e, 0x03, 0x02, 0x01, 0xef};
+    sender_send_code(pause, 5);
+}
+
+void mp3_volume_up(void) {
+    unsigned char incr[5] = {0x7e, 0x03, 0x05, 0x06, 0xef};
+    sender_send_code(incr, 5);
+}
+
+void mp3_volume_down(void) {
+    unsigned char decr[5] = {0x7e, 0x03, 0x06, 0x05, 0xef};
+    sender_send_code(decr, 5);
+}
+
+void mp3_stop(void) {
+    unsigned char stop[5] = {0x7e, 0x03, 0x0e, 0x0d, 0xef};
+    sender_send_code(stop, 5);
 }
