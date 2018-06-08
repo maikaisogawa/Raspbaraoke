@@ -5,7 +5,10 @@
 #include "strings.h"
 #include "malloc.h"
 #include "pi.h"
+#include "gl.h"
 #include "songs.h"
+#include "timer.h"
+#include "console.h"
 
 /*
  * karaoke_shell.c
@@ -43,8 +46,6 @@ static const command_t commands[] = {
     {"reboot", "reboots the Pi back to the bootloader", cmd_reboot},
     {"list", "lists the songs available for play", cmd_list},
     {"play", "plays the selected song", cmd_play},
- //   {"peek", "[address] prints the value stored at memory address 'address'", cmd_peek},
- //   {"poke", "[address][value] stores 'value' in the memory address 'address'", cmd_poke}
 };
 
 /*
@@ -94,76 +95,6 @@ int cmd_reboot(int argc, const char *argv[]) {
    pi_reboot(); 
    return 0;
 }
-
-/*
- * function: cmd_peek
- * Prints the value stored at the address specified in the 1st parameter
- * Throws error if given more than one argument, if the address
- * specified is not a valid number, or the address is not 4-byte-
- * aligned. 
- */
-//int cmd_peek (int argc, const char* argv[]) {
-//    if (argc < 2) {
-//        shell_printf("error: peek expects 1 argument [address]\n");
-//        return 1;
-//    }
-//    //int addr_len = strlen(argv[1]);
-//    const char* addr_str = argv[1];
-//    const char **endptr = &argv[1];
-//    unsigned int* addr = (unsigned int*)strtonum(argv[1],
-//        endptr);
-//    if (**endptr != '\0') {
-//        argv[1] = addr_str;
-//        shell_printf("error: peek cannot convert '%s'\n", argv[1]);
-//        return 1;
-//    }
-//    argv[1] = addr_str;
-//    if (((unsigned int)addr)%4 != 0) {
-//        shell_printf("error: peek address must be 4-byte aligned\n");
-//        return 1;
-//    }
-//    unsigned int val = *addr;
-//    shell_printf("0x%08x: %08x\n", (unsigned int)addr, val);
-//    return 0;
-//}
-
-/*
- * function: cmd_poke
- * Writes value stored in the second argument to the memory address
- * provided in the first argument. 
- * Throws error if there are less than 3 arguments, the memory address
- * specified isn't 4-byte aligned, or either argument cannot be 
- * converted to an integer. 
- */
-//int cmd_poke(int argc, const char* argv[]) {
-//    if (argc < 3) {
-//         shell_printf("error: poke expects 2 arguments [address][value]\n");
-//         return 1;
-//     }
-//     const char* addr_str = argv[1];
-//     const char **endptr = &argv[1];
-//     unsigned int* addr = (unsigned int*)strtonum(argv[1],
-//         endptr);
-//     if (**endptr != '\0') {
-//         argv[1] = addr_str;
-//         shell_printf("error: poke cannot convert '%s'\n", argv[1]);
-//         return 1;
-//     }
-//     if (((unsigned int)addr)%4 != 0) {
-//        argv[1] = addr_str;
-//        shell_printf("error: poke address must be 4-byte aligned\n");
-//        return 1;
-//     }
-//     unsigned int val = (unsigned int)strtonum(argv[2], endptr);
-//     if (**endptr != '\0') {
-//        shell_printf("error: poke cannot convert '%s'\n", argv[2]);
-//        argv[1] = addr_str;
-//        return 1;
-//     }
-//     argv[1] = addr_str;
-//     *addr = val;
-//     return 0;
-//}
 
 void shell_init(formatted_fn_t print_fn)
 {
@@ -281,9 +212,21 @@ int shell_evaluate(const char *line)
     return res;
 }
 
+void karaoke_intro(void) {
+    shell_printf("\n\n\n\n\n\n\n\n\n        Welcome to Raspbaraoke!\n");
+    timer_delay(3);
+    // bunch of graphical stuff here
+    gl_draw_rect(0, 0, gl_get_width() / 10, gl_get_width() / 10, GL_AMBER);
+    gl_swap_buffer();
+    timer_delay(3);
+    console_init(20, 40);
+    shell_printf("         Please select a song! \n\n Type 'Play' followed by the song title\n");
+}
+
 void karaoke_shell_run(void)
 {
-    shell_printf("Welcome to the Karaoke shell!\n");
+    karaoke_intro();
+  //  shell_printf("Welcome to the Karaoke shell!\n");
     while (1) 
     {
         char line[LINE_LEN + 1]; //effective line length = 80 (+'\0')
