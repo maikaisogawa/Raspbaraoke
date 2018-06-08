@@ -1,7 +1,7 @@
 NAME = test_songs
-MODULES = sender.o songs.o karaoke_shell.o
+MODULES = sender.o songs.o karaoke_shell.o mp3.o
 
-INTERFACES = sender.h songs.h karaoke_shell.h
+INTERFACES = sender.h songs.h karaoke_shell.h mp3.h
 
 
 CFLAGS  = -I$(CS107E)/include -I. -g -Wall -Wpointer-arith
@@ -30,7 +30,7 @@ all : $(NAME).bin
 install: $(NAME).bin
 	rpi-install.py -p $<
 
-test: tests/test_send.bin
+test: tests/test_mp3.bin
 	rpi-install.py -p $<
 
 clean:

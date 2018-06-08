@@ -30,6 +30,8 @@ void sender_init(unsigned int tx_pin, unsigned int rx_pin,
     //configure TX
     gpio_set_output(TX_PIN);
     gpio_write(TX_PIN, 1);
+    
+    printf("setup done.TX Pin: %x\n", gpio_read(TX_PIN)); 
 }
 
 /*
@@ -69,14 +71,11 @@ void send_byte(unsigned char scancode) {
     //printf("received_code: %x\n", received_code);
 }
 
-void sender_send_code(unsigned long long  code) {
-    //printf("sending %x\n", (unsigned int)code);
-    while (code) {
-        //printf("entered while loop in sender_send_code with code: %x\n", 
-            //(unsigned int)code);
-        unsigned int scancode = code & 0xff;
-        code >>= 8;
-        send_byte(scancode); 
+void sender_send_code(unsigned char* code, int size) {
+    printf("sending %x\n", (unsigned int)code[0]);
+    printf("tx pin: %x\n", gpio_read(TX_PIN));
+    for (int i = 0; i < size; i++) {
+        send_byte(code[i]);
     } 
 }
 
