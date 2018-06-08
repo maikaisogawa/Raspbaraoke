@@ -9,7 +9,7 @@ typedef struct
     char * lyrics;
 } song_t;
 
-song_t load_songs(void);
+song_t * load_songs(void);
 
 char * songs_get_title(song_t song);
 

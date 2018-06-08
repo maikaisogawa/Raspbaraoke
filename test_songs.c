@@ -12,10 +12,12 @@
 
 void main() 
 {
-    gpio_init();
-    console_init(20, 40);
-    keyboard_init();
+//    gpio_init();
+//    console_init(20, 40);
+//    keyboard_init();
     
-    shell_init(console_printf);
-    karaoke_shell_run();
+//    shell_init(console_printf);
+//    karaoke_shell_run();
+    songs_init();
+
 }
