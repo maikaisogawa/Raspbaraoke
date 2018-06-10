@@ -54,9 +54,9 @@ void send_bit(unsigned char a) {
  */
 void send_byte(unsigned char scancode) {
     send_bit(0); //start bit
-    unsigned int written = 0; 
-    unsigned int sent_code = 0;
-    unsigned int received_code = 0;
+   // unsigned int written = 0;
+  //  unsigned int sent_code = 0;
+ //   unsigned int received_code = 0;
     for (int i = 0; i < 8; i++) {
         char bit = scancode & 1;
         scancode >>= 1;

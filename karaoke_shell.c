@@ -9,6 +9,7 @@
 #include "songs.h"
 #include "timer.h"
 #include "console.h"
+#include "mp3.h"
 
 /*
  * karaoke_shell.c
@@ -30,12 +31,13 @@ int cmd_list(int argc, const char *argv[]) {
 }
 
 int cmd_play(int argc, const char *argv[]) {
-    for(int i = 0; i < NUM_SONGS; i++) {
-        // loop through list of song titles
-        // when find song title matches
-        // shift instruction to include appropriate song
-        // send instruction to play song
-    }
+    mp3_play_song(5);
+//    for(int i = 0; i < NUM_SONGS; i++) {
+//        // loop through list of song titles
+//        // when find song title matches
+//        // shift instruction to include appropriate song
+//        // send instruction to play song
+//    }
     return 0;
 }
 
@@ -220,7 +222,7 @@ void karaoke_intro(void) {
     gl_swap_buffer();
     timer_delay(3);
     console_init(20, 40);
-    shell_printf("         Please select a song! \n\n Type 'Play' followed by the song title\n");
+    shell_printf("         Please select a song! \n\n Type 'play' followed by the song title\n");
 }
 
 void karaoke_shell_run(void)
