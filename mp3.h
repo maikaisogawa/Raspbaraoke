@@ -44,6 +44,13 @@ void mp3_volume_up(void);
  */
 void mp3_volume_down(void);
 
+/* function: mp3_set_volume
+ * Sets the volume at the specified level
+ * @param LEVEL - number 0 <= LEVEL <= 30
+ * If LEVEL is outside that range, does nothing
+ */
+void mp3_set_volume(unsigned char LEVEL);
+
 /* function: mp3_stop
  * Stops the current song, whether it's playing or paused
  */

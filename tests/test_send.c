@@ -28,10 +28,10 @@ void main() {
         (unsigned int)arr[1], (unsigned int)arr[2], 
         (unsigned int)arr[3], (unsigned int)arr[4]);
     */
-    //sender_send_code(setup, SETUP.size);
+    sender_send_code(setup, SETUP.size);
     unsigned char play[5] = {0x7e, 0x03, 0x01, 0x02, 0xef};
-    sender_send_code(play, PLAY.size);
+    //sender_send_code(play, PLAY.size);
     unsigned char stop[5] = {0x7e, 0x03, 0x0e, 0x0d, 0xef};
-    sender_send_code(stop, STOP.size);    
+    //sender_send_code(stop, STOP.size);    
 }
     

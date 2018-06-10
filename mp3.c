@@ -10,9 +10,14 @@
  *          Gen Singer
  * CS107E, Spring 2018
  */
- 
+
+#define VOLUME_INIT 15 
+
+static unsigned int VOLUME; //BY8301-16P has volume range 0-30 
+
 void mp3_init(void){
     sender_init(GPIO_PIN20, GPIO_PIN21, 9600); //initialize serial com
+    //mp3_set_volume(15);
 }
 
 void mp3_play_song(unsigned int SONG_NUM) {
@@ -34,16 +39,33 @@ void mp3_pause(void) {
 }
 
 void mp3_volume_up(void) {
+    if (VOLUME < 30) {
+        mp3_set_volume(VOLUME + 1);
+    }
+ /*
     unsigned char incr[5] = {0x7e, 0x03, 0x05, 0x06, 0xef};
     sender_send_code(incr, 5);
+ */
 }
 
 void mp3_volume_down(void) {
+/*
     unsigned char decr[5] = {0x7e, 0x03, 0x06, 0x05, 0xef};
     sender_send_code(decr, 5);
+*/
+    if (VOLUME > 0) {
+        mp3_set_volume(VOLUME - 1);
+    }
 }
 
 void mp3_stop(void) {
     unsigned char stop[5] = {0x7e, 0x03, 0x0e, 0x0d, 0xef};
     sender_send_code(stop, 5);
+}
+
+void mp3_set_volume(unsigned char LEVEL) {
+    unsigned char CHECKSUM = 0x04 ^ 0x31 ^ LEVEL;
+    unsigned char vol[6] = {0x7e, 0x04, 0x31, LEVEL, CHECKSUM, 0xef};
+    VOLUME = LEVEL;
+    sender_send_code(vol, 6);
 }
