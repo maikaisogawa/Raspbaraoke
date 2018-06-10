@@ -23,6 +23,7 @@
 #define LINE_LEN 80
 #define BACKSPACE 0x8
 #define SPACE ' '
+#define LINE_PADDING 5
 
 // prototypes of commands added for karaoke shell, shell extension
 int cmd_list(int argc, const char *argv[]);
@@ -69,11 +70,39 @@ char * capture_title(int argc, const char *argv[]) {
  * function: run_lyrics
  * Displays the lyrics on the screen with appropriate timing as the song plays
  */
-void run_lyrics(song_t song) {
+void run_lyrics(song_t song) { // DECOMPOSE THIS
     gl_clear(GL_BLACK);
     char * lyrics = songs_get_lyrics(song);
-    gl_swap_buffer();
-    shell_printf("%s", lyrics);
+  //  gl_swap_buffer();
+    char * line = malloc(20);
+    int i = 0;
+    int x = 0;
+    int y = ((gl_get_height() / 2) - (gl_get_char_height() * 2) - (LINE_PADDING * 2));
+    while(lyrics[i] != '\0') {
+        if(lyrics[i] == '%') {
+            // time delay stamp
+            // reset x and y
+            // clear screen, etc.
+        }
+        if(lyrics[i] == '\n') {
+            memset(line + strlen(line), lyrics[i], 1);
+            memset(line + strlen(line), '\0', 1);
+            x = ((gl_get_width() / 2) - ((strlen(line) * gl_get_char_width()) / 2));
+            gl_draw_string(x, y, line, GL_WHITE);
+            printf("line: %s\n", line);
+            y += gl_get_char_height() + LINE_PADDING;
+            free(line);
+            line = malloc(20);
+            gl_swap_buffer();
+            timer_delay(3);
+            gl_swap_buffer();
+        } else {
+            memset(line + strlen(line), lyrics[i], 1);
+        }
+        i++;
+    }
+    // print in here with accurate timing, iterate through each character of the string
+   // shell_printf("%s", lyrics);
     timer_delay(3);
     gl_clear(GL_BLACK);
     gl_swap_buffer();
