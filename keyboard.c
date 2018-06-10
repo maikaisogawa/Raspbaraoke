@@ -93,28 +93,6 @@ unsigned char keyboard_read_scancode(void)
     int scancode = 0;
     while (!rb_dequeue(rb, &scancode)) {}
     return (unsigned char)scancode;
-/*
-    unsigned char total_c;
-    unsigned int numOnes;
-    while (1) {
-        total_c = 0;
-        numOnes = 0;
-        wait_for_falling_clock_edge();
-        for (int i = 0; i < 8; i++) {
-            wait_for_falling_clock_edge();
-            unsigned char addition = gpio_read(DATA);
-            numOnes += addition;
-            addition = addition << i;
-            total_c += addition;
-        }
-        wait_for_falling_clock_edge();
-        unsigned int parityBit = gpio_read(DATA);
-        numOnes += parityBit;
-        wait_for_falling_clock_edge();
-        if (numOnes%2 == 1) break;
-    }
-    return total_c;
-*/
 }
 
 int keyboard_read_sequence(unsigned char seq[])
