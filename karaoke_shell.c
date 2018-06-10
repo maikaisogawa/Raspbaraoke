@@ -9,6 +9,7 @@
 #include "songs.h"
 #include "timer.h"
 #include "console.h"
+#include "mp3.h"
 
 /*
  * karaoke_shell.c
@@ -22,22 +23,9 @@
 #define BACKSPACE 0x8
 #define SPACE ' '
 
-int cmd_list(int argc, const char *argv[]) {
-    for(int i = 0; i < NUM_SONGS; i++) {
-        // shell_printf("%s - %s\n", // song title, // song artist);
-    }
-    return 0;
-}
-
-int cmd_play(int argc, const char *argv[]) {
-    for(int i = 0; i < NUM_SONGS; i++) {
-        // loop through list of song titles
-        // when find song title matches
-        // shift instruction to include appropriate song
-        // send instruction to play song
-    }
-    return 0;
-}
+// prototypes of commands added for karaoke shell, shell extension
+int cmd_list(int argc, const char *argv[]);
+int cmd_play(int argc, const char *argv[]);
 
 static int (*shell_printf)(const char * format, ...); 
 static const command_t commands[] = {
@@ -47,6 +35,25 @@ static const command_t commands[] = {
     {"list", "lists the songs available for play", cmd_list},
     {"play", "plays the selected song", cmd_play},
 };
+
+int cmd_list(int argc, const char *argv[]) {
+    song_t * library = load_songs();
+ //   shell_printf("    + %s - %s\n", songs_get_title(library[0]));
+    for(int i = 0; i < NUM_SONGS; i++) {
+        shell_printf("    + %s - %s\n", songs_get_title(library[i]), songs_get_artist(library[i]));
+    }
+    return 0;
+}
+
+int cmd_play(int argc, const char *argv[]) {
+    song_t * library = load_songs();
+    for(int i = 0; i < NUM_SONGS; i++) {
+        if(strcmp(argv[1], songs_get_title(library[i])) == 0) {
+            mp3_play_song(5); // change this to play the approprate song [i]
+        }
+    }
+    return 0;
+}
 
 /*
  * function: cmd_echo
@@ -220,7 +227,7 @@ void karaoke_intro(void) {
     gl_swap_buffer();
     timer_delay(3);
     console_init(20, 40);
-    shell_printf("         Please select a song! \n\n Type 'Play' followed by the song title\n");
+    shell_printf("         Please select a song! \n\n Type 'play' followed by the song title\n");
 }
 
 void karaoke_shell_run(void)
