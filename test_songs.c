@@ -14,7 +14,6 @@
 void main() 
 {
     gpio_init();
- //   songs_init();
     console_init(20, 40);
     keyboard_init();
     mp3_init();

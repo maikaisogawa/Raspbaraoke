@@ -1,7 +1,5 @@
 //
 //  karaoke_shell.h
-//  
-//
 //  Created by Maika Isogawa on 6/7/18.
 //
 
@@ -10,8 +8,11 @@
 
 /*
  * Interface to the CS107E shell - extended for final project.
+ * This .h file may not include some functions that are already in the original shell.h file
  *
  * Author: Maika Isogawa
+ *          Callan Hoskins
+ *          Genevieve Singer
  * Date: June 2018
  */
 
@@ -82,6 +83,15 @@ int cmd_list(int argc, const char *argv[]);
  * Plays the selected karaoke song
  */
 int cmd_play(int argc, const char *argv[]);
+
+/*
+ * function: capture_title
+ * Takes the multiple arguments from shell input and creates a string that contains
+ * the whole name of the song title. Returns a pointer to the title
+ */
+char * capture_title(int argc, const char *argv[]);
+
+
 
 /*
  * shell_run
