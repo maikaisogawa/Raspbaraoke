@@ -12,7 +12,7 @@
  */
  
 void mp3_init(void){
-    sender_init(GPIO_PIN23, GPIO_PIN24, 9600); //initialize serial com
+    sender_init(GPIO_PIN20, GPIO_PIN21, 9600); //initialize serial com
 }
 
 void mp3_play_song(unsigned int SONG_NUM) {
