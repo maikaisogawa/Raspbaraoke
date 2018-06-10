@@ -8,15 +8,6 @@
  
 static unsigned int TX_PIN, RX_PIN, DELAY_US;
 
-/*
-static void setup_interrupts(void) {
-    bool ok = interrupts_attach_handler(interrupt_read_scancode);
-    if (!ok) pi_abort();
-    interrupts_enable_basic(INTERRUPTS_BASIC_ARM_TIMER_IRQ);
-    interrupts_global_enable();
-}
-*/
-
 void sender_init(unsigned int tx_pin, unsigned int rx_pin, 
     unsigned int baud_rate) {
     RX_PIN = rx_pin;
@@ -61,18 +52,16 @@ void send_byte(unsigned char scancode) {
         char bit = scancode & 1;
         scancode >>= 1;
         send_bit(bit);
-        //sent_code = sent_code | (bit << (i + 1));
-        //received_code = received_code | (gpio_read(RX_PIN) << i);
     }
-    //written = written | sent_code;
     send_bit(1); //stop bit
-    //written = written | (1 << 10);
-    //printf("written: %x\nsent_code: %x\n", written, sent_code >> 1);
-    //printf("received_code: %x\n", received_code);
 }
 
 void sender_send_code(unsigned char* code, int size) {
-    printf("sending %x\n", (unsigned int)code[0]);
+    printf("sending ");
+    for (int i = 0; i < size; i++) {
+        printf("%02x", code[i]);
+    } 
+    printf("\n");
     printf("tx pin: %x\n", gpio_read(TX_PIN));
     for (int i = 0; i < size; i++) {
         send_byte(code[i]);
@@ -91,7 +80,6 @@ unsigned int read_byte(void) {
         timer_delay_us(DELAY_US);
         READ_BYTE = READ_BYTE + (gpio_read(RX_PIN) << i);
     }
-    //timer_delay_us(DELAY_US);
     return READ_BYTE;
 } 
 unsigned long long sender_read_code(void) {
