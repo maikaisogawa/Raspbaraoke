@@ -66,55 +66,80 @@ char * capture_title(int argc, const char *argv[]) {
     return song_title;
 }
 
+// returns true if the character is a digit
+bool is_char_digit(char c) {
+    if(c >= '0' && c <= '9') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// clears both buffer screens
+void make_clean(void) {
+    gl_clear(GL_BLACK);
+    gl_swap_buffer();
+    gl_clear(GL_BLACK);
+    gl_swap_buffer();
+}
+
 /*
  * function: run_lyrics
  * Displays the lyrics on the screen with appropriate timing as the song plays
  */
 void run_lyrics(song_t song) { // DECOMPOSE THIS
-    gl_clear(GL_BLACK);
-    char * lyrics = songs_get_lyrics(song);
-  //  gl_swap_buffer();
-    char * line = malloc(20);
-    int i = 0;
-    int x = 0;
+    make_clean();
+    char * lyrics = malloc(500);
+    lyrics = songs_get_lyrics(song);
+    char * line = malloc(50);
+    int delay = 0, i = 0, char_count = 0, x = 0;
     int y = ((gl_get_height() / 2) - (gl_get_char_height() * 2) - (LINE_PADDING * 2));
     while(lyrics[i] != '\0') {
         if(lyrics[i] == '%') {
-            // time delay stamp
-            // reset x and y
-            // clear screen, etc.
-        }
-        if(lyrics[i] == '\n') {
-            memset(line + strlen(line), lyrics[i], 1);
-            memset(line + strlen(line), '\0', 1);
-            x = ((gl_get_width() / 2) - ((strlen(line) * gl_get_char_width()) / 2));
-            gl_draw_string(x, y, line, GL_WHITE);
-            printf("line: %s\n", line);
-            y += gl_get_char_height() + LINE_PADDING;
-            free(line);
-            line = malloc(20);
+            i++;
+            while(is_char_digit(lyrics[i])) {
+                memset(line + char_count, lyrics[i], 1);
+                char_count++;
+                i++;
+            }
+            memset(line + char_count, '\0', 1);
+            delay = strtonum(line, NULL);
+            memset(line, lyrics[i], 1);
+            char_count = 1;
+        } else if(lyrics[i] == '$') {  // change to new screen of lyrics
+            timer_delay(delay);
+            char_count = 0;
+            x = 0;
+            y = ((gl_get_height() / 2) - (gl_get_char_height() * 2) - (LINE_PADDING * 2));
             gl_swap_buffer();
-            timer_delay(3);
+            gl_clear(GL_BLACK);
+        } else if(lyrics[i] == '\n') {
+            memset(line + char_count, lyrics[i], 1);
+            char_count++;
+            memset(line + char_count, '\0', 1);
+            char_count = 0;
+            x = ((gl_get_width() / 2) - ((strlen(line) * gl_get_char_width()) / 2));
+            gl_swap_buffer();
+            gl_draw_string(x, y, line, GL_WHITE);
+            y += gl_get_char_height() + LINE_PADDING;
             gl_swap_buffer();
         } else {
-            memset(line + strlen(line), lyrics[i], 1);
+            memset(line + char_count, lyrics[i], 1);
+            char_count++;
         }
         i++;
     }
-    // print in here with accurate timing, iterate through each character of the string
-   // shell_printf("%s", lyrics);
     timer_delay(3);
     gl_clear(GL_BLACK);
     gl_swap_buffer();
-    console_init(20, 40);
-    shell_printf("         Please select a song! \n\nType 'play' followed by the song title!\n");
-    shell_printf("Type 'list' to see available songs!\n\n");
+    free(lyrics);
+    free(line);
 }
 
 /*
  * function: cmd_play
  * Loops through all songs in the library until it finds a matching song title,
- * then plays song
+ * then plays song.
  */
 int cmd_play(int argc, const char *argv[]) {
     song_t * library = load_songs();
@@ -125,15 +150,12 @@ int cmd_play(int argc, const char *argv[]) {
             mp3_play_song(i);
             free(song_title);
             run_lyrics(library[i]);
+            console_init(20, 40);
+            shell_printf("         Please select a song! \n\nType 'play' followed by the song title!\n");
+            shell_printf("Type 'list' to see available songs!\n\n");
             return 0;
         }
     }
-//    for(int i = 0; i < NUM_SONGS; i++) {
-//        if(strcmp(argv[1], songs_get_title(library[i])) == 0) {
-//            mp3_play_song(i);
-//            return 0;
-//        }
-//    }
     shell_printf("error: that song does not exist in the current library\nplease select another song\n");
     return -1;
 }
@@ -310,9 +332,6 @@ int shell_evaluate(const char *line)
 // The intro graphics to the karaoke console - 'karaoke mode'
 void karaoke_intro(void) {
     shell_printf("\n\n\n\n\n\n\n\n\n        Welcome to Raspbaraoke!\n");
-    // bunch of graphical stuff here if therte is time
-//    gl_draw_rect(0, 0, gl_get_width() / 10, gl_get_width() / 10, GL_AMBER);
-//    gl_swap_buffer();
     timer_delay(3);
     console_init(20, 40);
     shell_printf("         Please select a song! \n\nType 'play' followed by the song title!\n");
