@@ -11,6 +11,7 @@
 #include "console.h"
 #include "mp3.h"
 #include "printf.h"
+#include "EotT_cover.h"
 
 /*
  * karaoke_shell.c
@@ -83,6 +84,18 @@ void make_clean(void) {
     gl_swap_buffer();
 }
 
+void draw_song_cover(int x, int y, int h, int w) {
+    int pixel_arr[3];
+    for (int j = 0; j < h; j++) {
+        for (int i = 0; i < w; i++) {
+            HEADER_PIXEL(header_data, pixel_arr);
+            color_t pixel = gl_color(pixel_arr[0], pixel_arr[1], pixel_arr[2]);
+            gl_draw_pixel(x + i, y + j, pixel);
+        }
+    }
+    gl_swap_buffer();
+}
+
 /*
  * function: run_lyrics
  * Displays the lyrics on the screen with appropriate timing as the song plays
@@ -147,6 +160,13 @@ int cmd_play(int argc, const char *argv[]) {
     song_title = capture_title(argc, argv);
     for(int i = 0; i < NUM_SONGS; i++) {
         if(strcmp(song_title, songs_get_title(library[i])) == 0) {
+            make_clean();
+            shell_printf("You selected %s!\n%s", song_title);   //added
+            timer_delay(3);
+            draw_song_cover(160, 50, 200, 200);          //added
+             
+            timer_delay(3);
+ 
             mp3_play_song(i);
             free(song_title);
             run_lyrics(library[i]);

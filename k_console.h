@@ -38,5 +38,6 @@ void console_clear(void);
  */
 int console_printf(unsigned int x, unsigned int y, const char *format, ...);
 
+void draw_song_cover(int x, int y, int h, int w);
 
 #endif

@@ -35,7 +35,8 @@ char * find_title(char * title_code)
 /*
  * function: load_songs
  * Loads each component of the song_t struct such as title, artist, and lyrics
- */
+ */ 
+
 song_t * load_songs(void)
 {
     song_t * songs = malloc(500);

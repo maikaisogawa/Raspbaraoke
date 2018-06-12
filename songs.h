@@ -13,6 +13,7 @@ typedef struct
     char * artist;
     char * title;
     char * lyrics;
+    char * song_cover;
 } song_t;
 
 /*

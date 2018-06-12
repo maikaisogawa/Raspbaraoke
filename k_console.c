@@ -4,6 +4,7 @@
 #include "printf.h"
 #include "malloc.h" 
 #include <stdarg.h>
+#include "EotT_cover.h"
 
 #define BACKGROUND_COLOR GL_WHITE
 #define TEXT_COLOR GL_BLACK
@@ -90,6 +91,19 @@ void console_backspace(void) {
         *(tb + head*(cols + 1) + cursor_pos_x) = '\0';
     }
 }
+
+/*
+void draw_song_cover(int x, int y, int h, int w) {
+    char pixel_arr[3];
+    for (int j = 0; j < h; j++) {
+        for (int i = 0; i < w; i++) {
+            HEADER_PIXEL(header_data, pixel_arr);
+            color_t pixel = (pixel_arr[0], pixel_arr[1], pixel_arr[2]);
+            gl_draw_pixel(x + i, y + j, pixel);
+        }
+    }
+}
+*/
 
 void console_print_tb_to_fb(void) {
     gl_clear(BACKGROUND_COLOR);
