@@ -161,10 +161,9 @@ int cmd_play(int argc, const char *argv[]) {
     for(int i = 0; i < NUM_SONGS; i++) {
         if(strcmp(song_title, songs_get_title(library[i])) == 0) {
             make_clean();
-            shell_printf("You selected %s!\n%s", song_title);   //added
-            timer_delay(3);
+  //          shell_printf("You selected %s!\n%s", song_title);   //added
+  //          timer_delay(3);
             draw_song_cover(160, 50, 200, 200);          //added
-             
             timer_delay(3);
  
             mp3_play_song(i);
